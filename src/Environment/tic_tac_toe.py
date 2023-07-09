@@ -1,8 +1,8 @@
+import os
 import gym
 import numpy
 from gym import spaces, error
 import xml.etree.ElementTree as ET
-import os
 
 
 class TicTacToeEnv(gym.Env):
