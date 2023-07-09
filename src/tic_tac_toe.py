@@ -20,15 +20,7 @@ class TicTacToeEnv(gym.Env):
         self.render_mode = None
         self.observation_space = spaces.Dict(
             {
-                "0": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "1": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "2": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "3": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "4": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "5": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "6": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "7": spaces.Box(0, win_size - 1, shape=(2,), dtype=int),
-                "8": spaces.Box(0, win_size - 1, shape=(2,), dtype=int)
+                'state' : spaces.Discrete(n=9)
             }
         )
 
@@ -134,7 +126,6 @@ class TicTacToeEnv(gym.Env):
             is_position_already_used = True
 
         if is_position_already_used:
-            #self.state_vector[action] = 0
             reward_type = 'bad_position'
             done = False
         else:
@@ -150,13 +141,8 @@ class TicTacToeEnv(gym.Env):
                 reward_type = 'still_in_game'
                 done = False
 
-        return self.ConvertState2Dict(), self.rewards[reward_type], done, {'already_used_position': is_position_already_used}
+        return {'state': self.state_vector}, self.rewards[reward_type], done, {'already_used_position': is_position_already_used}
 
-    def ConvertState2Dict(self):
-        state_dict = {}
-        for i in range(0, len(self.state_vector)):
-            state_dict[str(i)] = self.state_vector[i]
-        return state_dict
     # ------------------------------------------ DISPLAY ----------------------------------------
     def get_state_vector_to_display(self):
         new_state_vector = []
