@@ -135,10 +135,11 @@ class state_space():
         print(f'{grid[6]}{grid[7]}{grid[8]}')
 
 class TD_Learning():
-    def __init__(self, grid_size):
+    def __init__(self, grid_symbol, grid_size):
         # Save the parameters
         self.name = "Value Function"
         self.grid_size = grid_size
+        self.grid_symbol = grid_symbol
 
         # Initialize the history
         self.state_id_history = []
@@ -151,11 +152,6 @@ class TD_Learning():
         # Create the state space
         self.state_space = state_space(self.grid_size)
         print(f'Number of unique states: {len(self.state_space.states)}')
-
-        state_value = self.get_unique_state('012012012')
-        state_value = self.set_state(state_value['state'], 0.5)
-
-        temp = 1
 
     # Get the unique state from the state space given a string such as '012012012'
     # The given string may not match the unique identifier and the returned dictionary will have the unique id for the given string
@@ -183,8 +179,33 @@ class TD_Learning():
         if len(self.reward_history) > 1:
             update_state_id = self.state_id_history[-2]
             update_state_value = self.get_unique_state(update_state_id)
-            update_state_value = update_state_value['value']
-            new_value = update_state_value + self.alpha*(reward + self.gamma*current_state['value'] - update_state_value)
+            new_value = update_state_value['value'] + self.alpha*(reward + self.gamma*current_state['value'] - update_state_value['value'])
             return self.set_state(update_state_value['state'], new_value)
         else:
             return None
+        
+    def get_action(self, grid):
+        # Determine the locations of 0's in the grid
+        indexes = [i for i, x in enumerate(grid) if x == 0]
+
+        # Loop through each 0 and create a new state_id and action pair
+        possible_actions = {}
+        for i in indexes:
+            new_grid = grid.copy()
+            new_grid[i] = self.grid_symbol
+            state_id = ''.join([str(i) for i in new_grid])
+            possible_actions[state_id] = i
+
+        # Loop through all the possible states to determine which has the highest value
+        actions = []
+        values = []
+        for action_entry in possible_actions:
+            actions.append(possible_actions[action_entry])
+            state = self.get_unique_state(action_entry)
+            values.append(state['value'])
+
+        # Get the action that points to the state with the highest reward
+        action = actions[values.index(max(values))]
+
+        # Return the action
+        return action

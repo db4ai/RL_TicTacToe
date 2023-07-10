@@ -3,7 +3,7 @@ import imp
 import xml.etree.ElementTree as ET
 
 class Agent():
-    def __init__(self, grid_size):
+    def __init__(self, grid_symbol, grid_size):
         # Placeholders
         self.agent_module_types = {}
         self.agent_class_types = {}
@@ -17,7 +17,7 @@ class Agent():
         fp, path, desc = imp.find_module(os.getcwd()+'\\src\\Agents\\'+self.agent_module_types[self.agent_type])
         module = imp.load_module(self.agent_module_types[self.agent_type], fp, path, desc)
         agent_class = getattr(module,self.agent_class_types[self.agent_type])
-        self._agent = agent_class(grid_size)
+        self._agent = agent_class(grid_symbol, grid_size)
 
     def get_state(self, state_id):
         return self._agent.get_unique_state(state_id)
@@ -27,6 +27,9 @@ class Agent():
     
     def update(self, state_id, reward):
         return self._agent.update(''.join(str(i) for i in state_id), reward)
+
+    def get_action(self, grid):
+        return self._agent.get_action(grid)
 
     # Load the XML settings and parse it
     def load_xml_settings(self, settings_file):

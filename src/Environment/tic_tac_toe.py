@@ -38,7 +38,7 @@ class TicTacToeEnv(gym.Env):
 
     def reset(self):
         self.state_vector = (self.board_size * self.board_size) * [0]
-        return self.state_vector
+        return {'state': self.state_vector}
 
     # ------------------------------------------ GAME STATE CHECK ----------------------------------------
     def is_win(self):
