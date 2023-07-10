@@ -83,19 +83,19 @@ class state_space():
             rotated_grid = self.grid_rotate_clockwise(rotated_grid)
             ids.append(self.grid_to_string(rotated_grid))
 
-        # Get the board from the state space
+        # Get the board from the state space, convert ids to a set in case there are duplicates
         state = None
         count = 0
-        for id in ids:
+        for id in set(ids):
             if id in self.states: 
                 state_value = {'state': id, 'value': self.states[id]}
                 count += 1
 
-        # Print an error if there are duplicate states found
-        if count > 1: print(f'DUPLICATE STATE FOUND FOR {id}')
+                # Print an error if there are duplicate states found
+                if count > 1: 
+                    print(f'DUPLICATE STATE FOUND {grid} <-> {id}')
         
         return state_value
-
 
     # convert the grid list to a string
     def grid_to_string(self, grid):
@@ -143,6 +143,21 @@ class Value_Function():
         # Create the state space
         self.state_space = state_space(self.grid_size)
         print(f'Number of unique states: {len(self.state_space.states)}')
-        
-        self.state_space.get_state('021202210')
+
+        state_value = self.get_unique_state('012012012')
+        state_value = self.set_state(state_value['state'], 0.5)
+
         temp = 1
+
+    # Get the unique state from the state space given a string such as '012012012'
+    # The given string may not match the unique identifier and the returned dictionary will have the unique id for the given string
+    def get_unique_state(self, state_id):
+        return self.state_space.get_state(state_id)
+    
+    # Update the unique state
+    # Returns the updated state_value dictionary
+    def set_state(self, state_id, value):
+        # First make sure the state_id is the unique state id
+        state_value = self.get_unique_state(state_id)
+        self.state_space.states[state_value['state']] = value
+        return self.get_unique_state(state_value['state'])

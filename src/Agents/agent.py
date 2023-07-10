@@ -19,7 +19,11 @@ class Agent():
         agent_class = getattr(module,self.agent_class_types[self.agent_type])
         self._agent = agent_class(grid_size)
 
-        temp = 1
+    def get_state(self, state_id):
+        return self._agent.get_unique_state(state_id)
+
+    def set_state(self, state_id, value):
+        return self._agent.set_state(state_id, value)
 
     # Load the XML settings and parse it
     def load_xml_settings(self, settings_file):
