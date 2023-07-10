@@ -19,7 +19,7 @@ def main():
     board_size = 3
 
     agent = Agent(board_size**2)
-    env = gym.make('TicTacToe-v1', symbols=[-1, 1], board_size=board_size, win_size=3)
+    env = gym.make('TicTacToe-v1', symbols=[1, 2], board_size=board_size, win_size=3)
 
     # Reset the env before playing
     state = env.reset()
@@ -27,11 +27,11 @@ def main():
     while not done:
         env.render(mode=None)
         if user == 0:
-            state, reward, done, infos = env.step([env.action_space.sample(), -1])
+            state, reward, done, infos = env.step([env.action_space.sample(), 1])
             # updated_state = agent.update(state['state'], reward)
             # temp=1
         elif user == 1:
-            state, reward, done, infos = env.step([env.action_space.sample(), 1])
+            state, reward, done, infos = env.step([env.action_space.sample(), 2])
         
         # If the game isn't over, change the current player
         if not infos['already_used_position']:
