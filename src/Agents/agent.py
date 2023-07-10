@@ -24,6 +24,9 @@ class Agent():
 
     def set_state(self, state_id, value):
         return self._agent.set_state(state_id, value)
+    
+    def update(self, state_id, reward):
+        return self._agent.update(''.join(str(i) for i in state_id), reward)
 
     # Load the XML settings and parse it
     def load_xml_settings(self, settings_file):

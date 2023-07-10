@@ -134,11 +134,19 @@ class state_space():
         print(f'{grid[3]}{grid[4]}{grid[5]}')
         print(f'{grid[6]}{grid[7]}{grid[8]}')
 
-class Value_Function():
+class TD_Learning():
     def __init__(self, grid_size):
         # Save the parameters
         self.name = "Value Function"
         self.grid_size = grid_size
+
+        # Initialize the history
+        self.state_id_history = []
+        self.reward_history = []
+
+        # Hyperparameters
+        self.alpha = 0.1
+        self.gamma = 0.9
 
         # Create the state space
         self.state_space = state_space(self.grid_size)
@@ -161,3 +169,22 @@ class Value_Function():
         state_value = self.get_unique_state(state_id)
         self.state_space.states[state_value['state']] = value
         return self.get_unique_state(state_value['state'])
+    
+    # Update the value function
+    def update(self, state_id, reward):
+        # Save the state and reward to the history
+        self.state_id_history.append(state_id)
+        self.reward_history.append(reward)
+
+        # Get the current unique state
+        current_state = self.get_unique_state(state_id)
+
+        # Wait until we have enough history to perform updates
+        if len(self.reward_history) > 1:
+            update_state_id = self.state_id_history[-2]
+            update_state_value = self.get_unique_state(update_state_id)
+            update_state_value = update_state_value['value']
+            new_value = update_state_value + self.alpha*(reward + self.gamma*current_state['value'] - update_state_value)
+            return self.set_state(update_state_value['state'], new_value)
+        else:
+            return None

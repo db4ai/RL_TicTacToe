@@ -28,6 +28,8 @@ def main():
         env.render(mode=None)
         if user == 0:
             state, reward, done, infos = env.step([env.action_space.sample(), -1])
+            # updated_state = agent.update(state['state'], reward)
+            # temp=1
         elif user == 1:
             state, reward, done, infos = env.step([env.action_space.sample(), 1])
         

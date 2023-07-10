@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <AgentSettings>
     <Agent_Types>
-        <Agent_Type id="0" module_name="value_function" class_name="Value_Function" />
-        <Agent_Type id="1" module_name="quality_function" class_name="Quality_Function" />
-        <Agent_Type id="2" module_name="td_learning" class_name="TD_Learning" /> 
-        <Agent_Type id="3" module_name="q_learning" class_name="Q_Learning" />
-        <Agent_Type id="4" module_name="actor_critic" class_name="Actor_Critic" />    
+        <Agent_Type id="0" module_name="td_learning" class_name="TD_Learning" /> 
+        <Agent_Type id="1" module_name="q_learning" class_name="Q_Learning" />
+        <Agent_Type id="2" module_name="actor_critic" class_name="Actor_Critic" />    
     </Agent_Types>
     <Agent_Selection id="0" />
 </AgentSettings>
